@@ -1,0 +1,102 @@
+%%
+%%   LaTeX Beamertheme Style for ESS Presentation template
+%%
+%%   It is the quite ugly code, beacause, I am not an expert
+%%   on this LaTeX style and it supports only 'presentation mode'
+%%   in beamer template...
+%%
+%%   Jeong Han Lee, han.lee@esss.se
+%%
+%%   v0.1 created Monday, Monday, November 23 09:07:19 CET 2015, jhlee
+%%
+%%
+\mode<presentation>
+
+\usecolortheme{ess}
+
+%% \setbeamersize{text margin left=1.6em}  % 
+%% \setbeamersize{text margin right=1.6em} % 
+  
+\setbeamerfont{structure}{series=\bfseries}
+\setbeamerfont{tiny structure}{size=\tiny}
+
+\setbeamerfont{title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{author}{size=\normalsize,parent=title}
+\setbeamerfont{institute}{size=\scriptsize,parent=title}
+\setbeamerfont{date}{size=\scriptsize,parent=title}
+
+\setbeamerfont{frametitle}{parent=structure,size=\Large}
+\setbeamerfont{framesubtitle}{parent=frametitle,size=\footnotesize}
+
+%% Only the first title should use the background image,
+%% which is the quick and dirty solution for me.
+%% don't use any { within ifnum, so it makes a 'offset' in your backgroud
+%% Monday, November 23 14:26:16 CET 2015, jhlee
+%%
+\setbeamertemplate{background canvas}{%
+  \ifnum\c@framenumber=1
+    \color{ESSBlue}\rule{\paperwidth}{\paperheight}
+  %  \else%
+  \fi%
+}
+
+
+%% Heavy customized title page for only ESS,
+%% the location of ESS logo is a tricky thing to do
+%% so as to match 'frame logo'
+%% 
+\setbeamertemplate{title page} {
+  \begin{centering}
+%  \begin{center}
+  \begin{pspicture}(\paperwidth,0.18\paperheight)
+    \rput[Bl](9,1.09){\includegraphics[scale=1]{figs/ess_logo}}
+  \end{pspicture}
+%  \end{center}
+%  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{title}\textbf{\inserttitle}
+    \end{beamercolorbox}
+    \vskip0em\par 
+    \vfill
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \vskip-1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \vskip3em\par 
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{date}\href{https://www.europeanspallationsource.se}{\nolinkurl{https://www.europeanspallationsource.se}}\\
+      \usebeamerfont{date}{\scriptsize \insertdate}
+    \end{beamercolorbox}\vskip0.5em
+  \end{centering}
+}
+
+                    
+\setbeamertemplate{frametitle} {
+  \nointerlineskip
+  \begin{beamercolorbox}[ht=0.18\paperheight,wd=\paperwidth]{frametitle}
+    \rput[Bl](0.6,0.24){\insertframetitle}\\
+    \rput[Bl](10,0.18){\includegraphics[scale=1]{figs/ess_logo}} 
+  \end{beamercolorbox}
+}
+
+
+% no navigation symbols
+\setbeamertemplate{navigation symbols}{
+}
+
+
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{
+    \makebox[\textwidth]{ 
+      \hskip14pt  \insertauthor \hfill  \@meetingname,~\@meetingcity,~\@meetingcountry \hfill \insertdate \hfill \insertframenumber/\@totalpagenumber \hskip22pt
+    }
+  }
+  \vskip2pt
+}
+
+\mode
+<all>

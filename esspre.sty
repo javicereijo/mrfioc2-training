@@ -1,0 +1,88 @@
+%%
+%%
+%%   LaTeX Beamer style for ESS Presentation template
+%%
+%%   It is the quite ugly code, beacause, I am not an expert
+%%   on this LaTeX style and it supports only 'presentation mode'
+%%   in beamer template...
+%%
+%%   Jeong Han Lee, han.lee@esss.se
+%%
+%%   v0.1 created Monday, Monday, November 23 09:07:19 CET 2015, jhlee
+%%
+%%
+
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{xcolor}
+%\usepackage{kotex}
+\usepackage{wasysym}
+%\usepackage{soul}
+%\usepackage{tabularx}
+%\usepackage{xmpmulti}
+%\usepackage{lmodern}
+
+
+%% For reference in order to customize size, offset stuffs..
+%%
+%% \def \sizewidth{128mm}
+%% \def \sizeheight{96mm}
+
+%% \special{papersize=\sizewidth,\sizeheight}
+%% \setlength{\paperwidth}{\sizewidth}
+%% \setlength{\paperheight}{\sizeheight}
+%% \setlength{\textwidth}{\sizewidth}
+%% \setlength{\textheight}{\sizeheight}
+%% %% \setlength{\voffset}{0.0pt}
+%% %% \setlength{\hoffset}{0.0pt}
+%% %% \setlength{\oddsidemargin}{0pt}
+%% %% \setlength{\evensidemargin}{0pt}
+%% %% \setlength{\marginparwidth}{0pt}
+%% %% \setlength{\parindent}{0.0mm}
+
+\def\meetingname#1{\def\@meetingname{#1}}
+\def\meetingcity#1{\def\@meetingcity{#1}}
+\def\meetingcountry#1{\def\@meetingcountry{#1}}
+\def\totalpagenumber#1{\def\@totalpagenumber{#1}}
+
+
+% pdf default information
+\hypersetup{
+    pdftitle    = {\inserttitle}
+  , pdfauthor   = {\insertauthor}
+  , pdfcreator  = {\insertauthor}
+  , pdfproducer = {\insertauthor}
+  , pdfstartview = {Fit}
+  , baseurl    = {https://www.europeanspallationsource.se}
+}
+
+
+\SetSansFonts{utsh}{utgt}\sffamily
+
+% To remove the following warning
+%% LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
+%% (Font)              size <5> substituted on input line 59.
+\let\Tiny=\tiny
+
+
+%% \def\hilite<#1>{
+%%   \temporal<#1>{\color{gray}}{\color{black}}
+%% 	    {\color{black!25}}
+%% }
+
+%% \def\hilight<#1>{
+%%   \temporal<#1>{\color{gray}}{\color{purple}}
+%% 	    {\colr{black}}
+%% }
+
+%% \def\hilitee<#1>{
+%%   \temporal<#1>{\color{gray}}{\color{black}}
+%% 	    {\color{black}}
+%% }
+
+%%
+%% Read beamthemeess.sty
+%%
+\usetheme{ess}
