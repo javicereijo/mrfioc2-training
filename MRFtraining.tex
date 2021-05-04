@@ -45,9 +45,9 @@
 \begin{frame}{Outline}
     \begin{itemize}
     \item Timing introduction
-    \item (E3 introduction)
+%    \item (E3 introduction)
     \item System configuration
-    \item e3-mrfioc2
+%    \item e3-mrfioc2
     \item EVR: basic start-up
     \item EVR: basic configuration
     \item EVR: events and triggers
@@ -58,7 +58,11 @@
     \item EVG: basic start-up
     \item EVG: basic configuration
     \item EVG: creating events and data
-    \item Features in development
+    \item Data buffer
+    \item Supercycle
+    \item Delay compensation
+    \item SAT and SIT
+    \item Deployment
     \end{itemize}
 \end{frame}
 
@@ -219,48 +223,48 @@
 \begin{frame}{Timing introduction (... and VIII)}
   \begin{block}{Documentation}
     \begin{itemize}
-      \item ESS Timing System System Architecture Description - ESS-0088633 - \url{https://chess.esss.lu.se/enovia/link/ESS-0088633/21308.51166.24576.44510/valid}
-      \item Data Model Specification for the ESS Timing System - ESS-0225673 - not available yet
-      \item Event System with Delay Compensation Technical Reference - \url{http://mrf.fi/fw/DCManual-170209.pdf} (not latest version, ask Javier if interested)
+      \item ESS Timing System System Architecture Description - ESS-0088633
+      \item Data Model Specification for the ESS Timing System - ESS-0225673
+      \item Event System with Delay Compensation Technical Reference - \url{http://mrf.fi/}
       \item EVR Usage Guide - \url{http://epics.sourceforge.net/mrfioc2/evr-usage.pdf} or \url{https://github.com/epics-modules/mrfioc2/blob/master/documentation/evr-usage.lyx} (lyx version)
-      \item Manuals in \url{https://github.com/icshwi/esstex/tree/master/document} (not all of them up to date)
+      \item Manuals in CHESS
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{(E3 introduction (I...))}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/icshwi/e3
-
-[iocuser@icslab-ts03 e3-mrfioc2]$ ./e3.bash -t all
-
-[iocuser@icslab-ts03 ~]$ source ~/ics_gitsrc/e3/tools/setenv
-
-Set the ESS EPICS Environment as follows:
-THIS Source NAME    : setE3Env.bash
-THIS Source PATH    : /epics/base-3.15.5/require/3.0.0/bin
-EPICS_BASE          : /epics/base-3.15.5
-EPICS_HOST_ARCH     : linux-x86_64
-E3_REQUIRE_LOCATION : /epics/base-3.15.5/require/3.0.0
-PATH                : /epics/base-3.15.5/require/3.0.0/bin:/epics/base-3.15.5/bin/linux-x86_64:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/iocuser/.local/bin:/home/iocuser/bin
-LD_LIBRARY_PATH     : /epics/base-3.15.5/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/siteLibs/linux-x86_64
-
-Enjoy E3!
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{(E3 introduction (... and II))}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\footnotesize]
-[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/icshwi/essics_scripts
-
-[iocuser@icslab-ts03 ics_gitsrc]$ bash essics_scripts/iocuser_env/iocuser_env_setup.bash clean
-
-[iocuser@icslab-ts03 ics_gitsrc]$ bash  essics_scripts/iocuser_env/iocuser_env_setup.bash install
-
-[iocuser@icslab-ts03 ics_gitsrc]$ bash  essics_scripts/iocuser_env/iocuser_env_setup.bash link
-
-\end{lstlisting}
-\end{frame}
+%\begin{frame}[fragile]{(E3 introduction (I...))}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+%[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/icshwi/e3
+%
+%[iocuser@icslab-ts03 e3-mrfioc2]$ ./e3.bash -t all
+%
+%[iocuser@icslab-ts03 ~]$ source ~/ics_gitsrc/e3/tools/setenv
+%
+%Set the ESS EPICS Environment as follows:
+%THIS Source NAME    : setE3Env.bash
+%THIS Source PATH    : /epics/base-3.15.5/require/3.0.0/bin
+%EPICS_BASE          : /epics/base-3.15.5
+%EPICS_HOST_ARCH     : linux-x86_64
+%E3_REQUIRE_LOCATION : /epics/base-3.15.5/require/3.0.0
+%PATH                : /epics/base-3.15.5/require/3.0.0/bin:/epics/base-3.15.5/bin/linux-x86_64:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/iocuser/.local/bin:/home/iocuser/bin
+%LD_LIBRARY_PATH     : /epics/base-3.15.5/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/siteLibs/linux-x86_64
+%
+%Enjoy E3!
+%\end{lstlisting}
+%\end{frame}
+%
+%\begin{frame}[fragile]{(E3 introduction (... and II))}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\footnotesize]
+%[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/icshwi/essics_scripts
+%
+%[iocuser@icslab-ts03 ics_gitsrc]$ bash essics_scripts/iocuser_env/iocuser_env_setup.bash clean
+%
+%[iocuser@icslab-ts03 ics_gitsrc]$ bash  essics_scripts/iocuser_env/iocuser_env_setup.bash install
+%
+%[iocuser@icslab-ts03 ics_gitsrc]$ bash  essics_scripts/iocuser_env/iocuser_env_setup.bash link
+%
+%\end{lstlisting}
+%\end{frame}
 
 \begin{frame}[fragile]{System configuration (I...)}
 \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
@@ -332,15 +336,15 @@ Aug 17 10:28:19 icslab-ts03 systemd[1]: Started Builds and install new kernel mo
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{e3-mrfioc2}
-  \begin{itemize}
-    \item \url{https://github.com/icshwi/e3-mrfioc2/}
-    \item Cmds: startup scripts
-    \item Opi: community opis with ESS naming (check readme for opis up to date)
-    \item Template: substitutions files
-    \item Installation path: /epics/base-3.15.5/require/3.0.0/siteMods/mrfioc2/2.2.0-rc2/db/
-  \end{itemize}
-\end{frame}
+%\begin{frame}{e3-mrfioc2}
+%  \begin{itemize}
+%    \item \url{https://github.com/icshwi/e3-mrfioc2/}
+%    \item Cmds: startup scripts
+%    \item Opi: community opis with ESS naming (check readme for opis up to date)
+%    \item Template: substitutions files
+%    \item Installation path: /epics/base-3.15.5/require/3.0.0/siteMods/mrfioc2/2.2.0-rc2/db/
+%  \end{itemize}
+%\end{frame}
 
 \begin{frame}[fragile]{EVR: basic start-up}
 \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
@@ -615,7 +619,7 @@ system("/bin/sh ./configure_sequence.sh $(IOC) $(DEV1)")
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Features in development (I...)}
+\begin{frame}[fragile]{Data buffer}
   \begin{block}{Data buffer}
 \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
 TRAINING-EVR1:dbus-recv-u32
@@ -627,7 +631,7 @@ TRAINING-EVM1:Link-TxMode-Sel
   \end{block}
 \end{frame}
 
-\begin{frame}{Features in development (...II...)}
+\begin{frame}{Supercycle (I...)}
   \begin{block}{Supercycle}
     \begin{itemize}
       \item Supercycle: a predefined sequence of machine cycles:
@@ -641,7 +645,7 @@ TRAINING-EVM1:Link-TxMode-Sel
         \item 1 Hz operation must have 1 cycle with beam, 13 cycles without beam
         \item 0.1 Hz: 1 cycle with beam,  139 cycles without beam
       \end{itemize}
-      \item Editor application (to be developed) allows to define
+      \item Editor application allows to define
       \begin{itemize}
         \item pulse length (timing events in HW sequencer)
         \item beam current (iris change, probably not between cycles)
@@ -650,14 +654,50 @@ TRAINING-EVM1:Link-TxMode-Sel
         \item beam mode (in data buffer)
         \item etc.
       \end{itemize}
-      \item Concept still needs refinement
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}{Features in development (... and III)}
+\begin{frame}{Supercycle (... and II)}
+  \begin{block}{Example}
+    \begin{itemize}
+      \item Example from \url{https://gitlab.esss.lu.se/icshwi/reftabs/-/blob/master/supercycles/example-noCalib-2Hz-14c.csv}.
+    \end{itemize}
+    \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+Id,IonMagSt,IonMagEnd,RFSt,LEBTCSt,LEBTCEnd,MEBTCSt,MEBTCEnd,BPulseSt,BPulseEnd,BLen,BEn,BCurr
+0,10000,10050,10010,10100,10150,10200,10250,13300,13350,50,100,100000
+1,,,10011,10100,10151,10200,10251,13300,13350,51,101,100001
+2,,,10012,10100,10152,10200,10252,13300,13350,52,102,100002
+3,,,10013,10100,10153,10200,10253,13300,13350,53,103,100003
+4,,,10014,10100,10154,10200,10254,13300,13350,54,104,100004
+5,,,10015,10100,10155,10200,10255,13300,13350,55,105,100005
+6,,,10016,10100,10156,10200,10256,13300,13350,56,106,100006
+7,10000,10060,10017,10100,10157,10200,10257,13300,13350,57,107,100007
+8,,,10018,10100,10158,10200,10258,13300,13350,58,108,100008
+9,,,10019,10100,10159,10200,10259,13300,13350,59,109,100009
+10,,,10020,10100,10160,10200,10260,13300,13350,60,110,100010
+11,,,10021,10100,10161,10200,10261,13300,13350,61,111,100011
+12,,,10022,10100,10162,10200,10262,13300,13350,62,112,100012
+13,,,10023,10100,10163,10200,10263,13300,13350,63,113,100013
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Delay compensation}
   \begin{block}{DC}
     Delay compensation is achieved in measuring the propagation delay of events from the delay compensation master EVM through the distribution network up to the Event Receivers. At the last stage the EVR is aware of the delay through the network and adjusts an internal FIFO depth to match a programmed target delay value.
+  \end{block}
+\end{frame}
+
+\begin{frame}{SAT and SIT}
+  \begin{block}{SAT and SIT}
+    Jerzy... WIP
+  \end{block}
+\end{frame}
+
+\begin{frame}{Deployment}
+  \begin{block}{Deployment}
+    Jerzy... WIP
   \end{block}
 \end{frame}
 
