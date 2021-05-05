@@ -46,19 +46,20 @@
     \begin{itemize}
     \item Timing introduction
 %    \item (E3 introduction)
-    \item System configuration
+%    \item System configuration
 %    \item e3-mrfioc2
-    \item EVR: basic start-up
-    \item EVR: basic configuration
-    \item EVR: events and triggers
-    \item EVR: timestamping
-    \item EVR: standalone mode
-    \item EVR: inputs
-    \item EVR: backplane clocks
-    \item EVG: basic start-up
-    \item EVG: basic configuration
-    \item EVG: creating events and data
+%    \item EVR: basic start-up
+%    \item EVR: basic configuration
+%    \item EVR: events and triggers
+%    \item EVR: timestamping
+%    \item EVR: standalone mode
+%    \item EVR: inputs
+%    \item EVR: backplane clocks
+%    \item EVG: basic start-up
+%    \item EVG: basic configuration
+%    \item EVG: creating events and data
     \item Data buffer
+    \item Timestamping
     \item Supercycle
     \item Delay compensation
     \item SAT and SIT
@@ -266,75 +267,75 @@
 %\end{lstlisting}
 %\end{frame}
 
-\begin{frame}[fragile]{System configuration (I...)}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-[iocuser@icslab-ts03 ~]$ lspci
-0a:00.0 Signal processing controller: Xilinx Corporation Device 7011
-[iocuser@icslab-ts03 ~]$ lspci -s a:0 -vv
-0a:00.0 Signal processing controller: Xilinx Corporation Device 7011
-	Subsystem: Device 1a3e:132c
-	Physical Slot: 1-1
-	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
-	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-	Latency: 0, Cache Line Size: 64 bytes
-	Interrupt: pin A routed to IRQ 7
-	Region 0: Memory at c0600000 (32-bit, non-prefetchable) [size=256K]
-	Capabilities: <access denied>
-
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{System configuration (...II...)}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/jeonghanlee/pciids
-
-[iocuser@icslab-ts03 pciids]$ sh replace-pciids.bash
-
-[iocuser@icslab-ts03 pciids]$ lspci -s a:0 -vv
-0a:00.0 Signal processing controller: Xilinx Corporation XILINX PCI DEVICE
-	Subsystem: Micro-Research Finland Oy MTCA Event Receiver 300
-	Physical Slot: 1-1
-	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
-	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-	Latency: 0, Cache Line Size: 64 bytes
-	Interrupt: pin A routed to IRQ 7
-	Region 0: Memory at c0600000 (32-bit, non-prefetchable) [size=256K]
-	Capabilities: <access denied>
-
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{System configuration (...III...)}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\footnotesize]
-[iocuser@icslab-ts03 e3-mrfioc2]$ make init
-
-[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_add
-
-[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_build
-
-[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_install
-
-[iocuser@icslab-ts03 e3-mrfioc2]$ make setup
-
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{System configuration (... and IV)}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-[iocuser@icslab-ts03 e3-mrfioc2]$ systemctl status dkms
-● dkms.service - Builds and install new kernel modules through DKMS
-   Loaded: loaded (/usr/lib/systemd/system/dkms.service; enabled; vendor preset: enabled)
-   Active: active (exited) since Fri 2018-08-17 10:28:19 CEST; 57s ago
-     Docs: man:dkms(8)
-  Process: 793 ExecStart=/bin/sh -c dkms autoinstall --verbose --kernelver $(uname -r) (code=exited, status=0/SUCCESS)
- Main PID: 793 (code=exited, status=0/SUCCESS)
-    Tasks: 0
-   CGroup: /system.slice/dkms.service
-
-Aug 17 10:28:18 icslab-ts03 systemd[1]: Starting Builds and install new kernel modules through DKMS...
-Aug 17 10:28:19 icslab-ts03 systemd[1]: Started Builds and install new kernel modules through DKMS.
-\end{lstlisting}
-\end{frame}
+%\begin{frame}[fragile]{System configuration (I...)}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+%[iocuser@icslab-ts03 ~]$ lspci
+%0a:00.0 Signal processing controller: Xilinx Corporation Device 7011
+%[iocuser@icslab-ts03 ~]$ lspci -s a:0 -vv
+%0a:00.0 Signal processing controller: Xilinx Corporation Device 7011
+%	Subsystem: Device 1a3e:132c
+%	Physical Slot: 1-1
+%	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+%	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+%	Latency: 0, Cache Line Size: 64 bytes
+%	Interrupt: pin A routed to IRQ 7
+%	Region 0: Memory at c0600000 (32-bit, non-prefetchable) [size=256K]
+%	Capabilities: <access denied>
+%
+%\end{lstlisting}
+%\end{frame}
+%
+%\begin{frame}[fragile]{System configuration (...II...)}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+%[iocuser@icslab-ts03 ics_gitsrc]$ git clone https://github.com/jeonghanlee/pciids
+%
+%[iocuser@icslab-ts03 pciids]$ sh replace-pciids.bash
+%
+%[iocuser@icslab-ts03 pciids]$ lspci -s a:0 -vv
+%0a:00.0 Signal processing controller: Xilinx Corporation XILINX PCI DEVICE
+%	Subsystem: Micro-Research Finland Oy MTCA Event Receiver 300
+%	Physical Slot: 1-1
+%	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+%	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+%	Latency: 0, Cache Line Size: 64 bytes
+%	Interrupt: pin A routed to IRQ 7
+%	Region 0: Memory at c0600000 (32-bit, non-prefetchable) [size=256K]
+%	Capabilities: <access denied>
+%
+%\end{lstlisting}
+%\end{frame}
+%
+%\begin{frame}[fragile]{System configuration (...III...)}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\footnotesize]
+%[iocuser@icslab-ts03 e3-mrfioc2]$ make init
+%
+%[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_add
+%
+%[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_build
+%
+%[iocuser@icslab-ts03 e3-mrfioc2]$ make dkms_install
+%
+%[iocuser@icslab-ts03 e3-mrfioc2]$ make setup
+%
+%\end{lstlisting}
+%\end{frame}
+%
+%\begin{frame}[fragile]{System configuration (... and IV)}
+%\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+%[iocuser@icslab-ts03 e3-mrfioc2]$ systemctl status dkms
+%● dkms.service - Builds and install new kernel modules through DKMS
+%   Loaded: loaded (/usr/lib/systemd/system/dkms.service; enabled; vendor preset: enabled)
+%   Active: active (exited) since Fri 2018-08-17 10:28:19 CEST; 57s ago
+%     Docs: man:dkms(8)
+%  Process: 793 ExecStart=/bin/sh -c dkms autoinstall --verbose --kernelver $(uname -r) (code=exited, status=0/SUCCESS)
+% Main PID: 793 (code=exited, status=0/SUCCESS)
+%    Tasks: 0
+%   CGroup: /system.slice/dkms.service
+%
+%Aug 17 10:28:18 icslab-ts03 systemd[1]: Starting Builds and install new kernel modules through DKMS...
+%Aug 17 10:28:19 icslab-ts03 systemd[1]: Started Builds and install new kernel modules through DKMS.
+%\end{lstlisting}
+%\end{frame}
 
 %\begin{frame}{e3-mrfioc2}
 %  \begin{itemize}
@@ -345,6 +346,137 @@ Aug 17 10:28:19 icslab-ts03 systemd[1]: Started Builds and install new kernel mo
 %    \item Installation path: /epics/base-3.15.5/require/3.0.0/siteMods/mrfioc2/2.2.0-rc2/db/
 %  \end{itemize}
 %\end{frame}
+
+\begin{frame}{Data buffer}
+  \begin{block}{Data buffer}
+    \url{https://confluence.esss.lu.se/display/HAR/Data+Buffer}
+    \url{https://confluence.esss.lu.se/display/HAR/Event+and+Trigger+Reference}
+    \begin{itemize}
+      \item Protocol number
+      \item Protocol version
+      \item Linac cycle counter/ID & Heartbeat
+      \item Proton beam status
+      \item Proton beam destination (last point)
+      \item Proton beam mode
+      \item Proton beam present
+      \item Proton beam length
+      \item Proton beam energy
+      \item Proton beam current
+      \item Raster pattern
+      \item Target segment
+\end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Timestamping}
+\url{https://github.com/icshwi/esstex/tree/master/document/ics_eng_docs_timestamping}
+\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+
+6690f8a.icslab-ipc01.14335 > generalTimeReport
+Backwards time errors prevented 0 times.
+
+Current Time Providers:
+    "EVR", priority = 50
+        Current Time is 2018-08-13 11:18:40.234652.
+    "OS Clock", priority = 999
+        Current Time is 2018-08-13 11:20:05.683007.
+
+Event Time Providers:
+    "EVR", priority = 50
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Supercycle (I...)}
+  \begin{block}{Supercycle}
+    \begin{itemize}
+      \item Supercycle: a predefined sequence of machine cycles:
+      \begin{itemize}
+        \item Timing pattern
+        \item Beam parameter (data)
+      \end{itemize}
+      \item Cycles are pre-configured (with a control-room application)
+      \item E.g., a supercycle for:
+      \begin{itemize}
+        \item 1 Hz operation must have 1 cycle with beam, 13 cycles without beam
+        \item 0.1 Hz: 1 cycle with beam,  139 cycles without beam
+      \end{itemize}
+      \item Editor application allows to define
+      \begin{itemize}
+        \item pulse length (timing events in HW sequencer)
+        \item beam current (iris change, probably not between cycles)
+        \item pulse delay (within 2.86 time window, in sequencer)
+        \item beam destination (in data buffer)
+        \item beam mode (in data buffer)
+        \item etc.
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Supercycle (... and II)}
+  \begin{block}{Example}
+    \begin{itemize}
+      \item Example from \url{https://gitlab.esss.lu.se/icshwi/reftabs/-/blob/master/supercycles/example-noCalib-2Hz-14c.csv}.
+    \end{itemize}
+    \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+Id,IonMagSt,IonMagEnd,RFSt,LEBTCSt,LEBTCEnd,MEBTCSt,MEBTCEnd,BPulseSt,BPulseEnd,BLen,BEn,BCurr
+0,10000,10050,10010,10100,10150,10200,10250,13300,13350,50,100,100000
+1,,,10011,10100,10151,10200,10251,13300,13350,51,101,100001
+2,,,10012,10100,10152,10200,10252,13300,13350,52,102,100002
+3,,,10013,10100,10153,10200,10253,13300,13350,53,103,100003
+4,,,10014,10100,10154,10200,10254,13300,13350,54,104,100004
+5,,,10015,10100,10155,10200,10255,13300,13350,55,105,100005
+6,,,10016,10100,10156,10200,10256,13300,13350,56,106,100006
+7,10000,10060,10017,10100,10157,10200,10257,13300,13350,57,107,100007
+8,,,10018,10100,10158,10200,10258,13300,13350,58,108,100008
+9,,,10019,10100,10159,10200,10259,13300,13350,59,109,100009
+10,,,10020,10100,10160,10200,10260,13300,13350,60,110,100010
+11,,,10021,10100,10161,10200,10261,13300,13350,61,111,100011
+12,,,10022,10100,10162,10200,10262,13300,13350,62,112,100012
+13,,,10023,10100,10163,10200,10263,13300,13350,63,113,100013
+
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Delay compensation}
+  \begin{block}{DC}
+    Delay compensation is achieved in measuring the propagation delay of events from the delay compensation master EVM through the distribution network up to the Event Receivers. At the last stage the EVR is aware of the delay through the network and adjusts an internal FIFO depth to match a programmed target delay value.
+  \end{block}
+\end{frame}
+
+\begin{frame}{SAT and SIT}
+  \begin{block}{SAT and SIT}
+    \begin{itemize}
+      \item When EVR is installed in FEB/G02: SAT and SIT.
+      \item Jerzy does it.
+      \item \url{https://confluence.esss.lu.se/display/HAR/Acceptance}
+      \item SAT: check that the HW is OK, MCH correctly configured, fibres in place, etc.
+      \item SIT: check that the EVR is working fine, receives events from the EVG, correctly creates trigger and gate signals, etc.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Deployment}
+  \begin{block}{Deployment}
+    \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
+require "autosave" "5.10.2"
+require "mrfioc2" "2.3.1-beta.3.3"
+epicsEnvSet "PEVR" "SYS-SUB:Ctrl-EVR-101"
+epicsEnvSet "PCI_SLOT" "08:00.0"
+epicsEnvSet "OUTARGS" "WIDTH0=1000, EVT0T0=14, BP0SRC=0, WIDTH1=1000, EVT1T0=15, BP1SRC=1, WIDTH2=10, EVT2T0=12, WIDTH3=10, EVT3T0=13, BP2SRC=49, WIDTH4=1000, EVT4T0=125, BP3SRC=4, WIDTH5=1000,  EVT5T0=40, BP4SRC=5, WIDTH7=1000, EVT7T0=42, BP6SRC=7,"
+epicsEnvSet "INARGS" "BPIN5=, BP5EVT=41, BPIN7=, BP7EVT=43,"
+
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Questions?}
+  \begin{center}
+    {\Huge Questions?}
+  \end{center}
+\end{frame}
 
 \begin{frame}[fragile]{EVR: basic start-up}
 \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
@@ -619,88 +751,6 @@ system("/bin/sh ./configure_sequence.sh $(IOC) $(DEV1)")
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Data buffer}
-  \begin{block}{Data buffer}
-\begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-TRAINING-EVR1:dbus-recv-u32
-TRAINING-EVM1:dbus-send-u32
-
-TRAINING-EVR1:Link-RxMode-Sel
-TRAINING-EVM1:Link-TxMode-Sel
-\end{lstlisting}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Supercycle (I...)}
-  \begin{block}{Supercycle}
-    \begin{itemize}
-      \item Supercycle: a predefined sequence of machine cycles:
-      \begin{itemize}
-        \item Timing pattern
-        \item Beam parameter (data)
-      \end{itemize}
-      \item Cycles are pre-configured (with a control-room application)
-      \item E.g., a supercycle for:
-      \begin{itemize}
-        \item 1 Hz operation must have 1 cycle with beam, 13 cycles without beam
-        \item 0.1 Hz: 1 cycle with beam,  139 cycles without beam
-      \end{itemize}
-      \item Editor application allows to define
-      \begin{itemize}
-        \item pulse length (timing events in HW sequencer)
-        \item beam current (iris change, probably not between cycles)
-        \item pulse delay (within 2.86 time window, in sequencer)
-        \item beam destination (in data buffer)
-        \item beam mode (in data buffer)
-        \item etc.
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Supercycle (... and II)}
-  \begin{block}{Example}
-    \begin{itemize}
-      \item Example from \url{https://gitlab.esss.lu.se/icshwi/reftabs/-/blob/master/supercycles/example-noCalib-2Hz-14c.csv}.
-    \end{itemize}
-    \begin{lstlisting}[style=termstyle,breaklines=true,basicstyle=\scriptsize]
-Id,IonMagSt,IonMagEnd,RFSt,LEBTCSt,LEBTCEnd,MEBTCSt,MEBTCEnd,BPulseSt,BPulseEnd,BLen,BEn,BCurr
-0,10000,10050,10010,10100,10150,10200,10250,13300,13350,50,100,100000
-1,,,10011,10100,10151,10200,10251,13300,13350,51,101,100001
-2,,,10012,10100,10152,10200,10252,13300,13350,52,102,100002
-3,,,10013,10100,10153,10200,10253,13300,13350,53,103,100003
-4,,,10014,10100,10154,10200,10254,13300,13350,54,104,100004
-5,,,10015,10100,10155,10200,10255,13300,13350,55,105,100005
-6,,,10016,10100,10156,10200,10256,13300,13350,56,106,100006
-7,10000,10060,10017,10100,10157,10200,10257,13300,13350,57,107,100007
-8,,,10018,10100,10158,10200,10258,13300,13350,58,108,100008
-9,,,10019,10100,10159,10200,10259,13300,13350,59,109,100009
-10,,,10020,10100,10160,10200,10260,13300,13350,60,110,100010
-11,,,10021,10100,10161,10200,10261,13300,13350,61,111,100011
-12,,,10022,10100,10162,10200,10262,13300,13350,62,112,100012
-13,,,10023,10100,10163,10200,10263,13300,13350,63,113,100013
-    \end{lstlisting}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Delay compensation}
-  \begin{block}{DC}
-    Delay compensation is achieved in measuring the propagation delay of events from the delay compensation master EVM through the distribution network up to the Event Receivers. At the last stage the EVR is aware of the delay through the network and adjusts an internal FIFO depth to match a programmed target delay value.
-  \end{block}
-\end{frame}
-
-\begin{frame}{SAT and SIT}
-  \begin{block}{SAT and SIT}
-    Jerzy... WIP
-  \end{block}
-\end{frame}
-
-\begin{frame}{Deployment}
-  \begin{block}{Deployment}
-    Jerzy... WIP
-  \end{block}
-\end{frame}
-
 %\begin{frame}{}
 %\end{frame}
 
@@ -709,126 +759,5 @@ Id,IonMagSt,IonMagEnd,RFSt,LEBTCSt,LEBTCEnd,MEBTCSt,MEBTCEnd,BPulseSt,BPulseEnd,
     {\Huge Questions?}
   \end{center}
 \end{frame}
-
-
-
-% \begin{frame}{EPICS Environment}
-%   There is no generic EPICS environment, and each lab has its own environment historically. Historically, many labs use more than one EPICS release and drivers should be built for all EPICS releases in parallel
-%   \begin{block}{Loadable Driver Module (LDM) at PSI}
-%     \begin{itemize}
-%     \item Build drivers for multiple releases of EPICS, and load drivers dynamically from startup script.
-%     \item is used to run PSI machine since 2005, which is the first presentation in the community.
-%     \end{itemize}
-%   \end{block}
-%   \begin{exampleblock}{ESS EPICS Environment}
-%     \begin{itemize}
-%     \item has been evolved from LDM in cooperation with Dirk Zimoch at PSI.
-%     \item provides a collection of scripts to develop, build, and deploy an EPICS IOC.
-%     \item provides customized solutions to run different configurations at the same time and in the same machine, to test next releases of IOCs independently, and to switch the old and new versions of an IOC easily and quickly.
-%     \end{itemize}
-%   \end{exampleblock}
-% \end{frame}
-%
-%
-% \begin{frame}{Motion Control - MPS integation}
-%   \begin{columns}
-%     \begin{column}{.6\textwidth}
-%       \begin{block}{MCU 1013 - Single Axis MPS version}
-%         \begin{itemize}
-%         \item CPU, couplier, linear stage, INC encoder, redundant switches
-%         \item Motion control with an Open Source EtherCAT master, which is being developed by ICS and the motion group at ESS
-%         \item Based on the open source EtherCAT technology
-%         \item The Open Source EtherCAT master (www.etherlab.org) can run on Linux
-%         \item  No software licences
-%           %%   \begin{itemize}
-%           %%   \item EtherCAT hardware have rather high performance
-%           %%   \item The Open Source EtherCAT master (www.etherlab.org) can run on Linux
-%           %%   \item No software licences
-%           %%   \item MCAG group also evaluates an industrial control system called TwinCAT (soft controller running under Windows operating system only) with EtherCAT hardware and the same hardware can be used with this open source approach
-%           %%   \item ICS is also using open source ethercat master (www.etherlab.org) for sampling analog and digital signals to EPICS.
-%           %%   \end{itemize}
-%         \end{itemize}
-%       \end{block}
-%     \end{column}
-%     \begin{column}{.5\textwidth}
-%       \centering
-%       \includegraphics[width=1\textwidth]{./pictures/motion-ws-dual-axis.eps}
-%
-%     \end{column}
-%     \end{columns}
-% \end{frame}
-%
-%
-% %% \begin{frame}{Interface Description \textbf{iff} FW in FE, BE, or Both}
-% %%   \begin{exampleblock}{Example : Communication}
-%
-% %%   The Supplier shall provide the required interface to control the XXX remotely. The remote communication protocol shall be compliance with the ESS ICS Standard and the remote communication could be performed through Ethernet networks. The Ethernet interface provides the ability to use TCP socket connection and to fulfill the standard Ethernet attached devices requirements as follows:
-%
-% %% \begin{itemize}
-% %% \item Ethernet-attached devices shall be compatible with a 1 Gb/s network
-% %% \item Ethernet-attached devices shall operate at a minimum network speed of 100 Mb/s
-% %% \item Ethernet-attached devices shall obtain their network address either through static address configuration or DHCP.
-% %% \item Ethernet-attached devices shall include a Standard RJ-45 modular connector
-% %% \item Cables should be wired by the Industry Standard Pin-out
-% %% \end{itemize}
-% %% \end{exampleblock}
-% %% \end{frame}
-%
-%
-% \begin{frame}{Questions}
-%   In mathematics the art of proposing a question must be held of higher value than solving it.\\
-%   \begin{flushright}
-%     Georg Cantor
-%   \end{flushright}
-%
-%   It is not enough for me to ask the question; I want to know how to answer the one question that seems to encompass everything I face: What am I here for?
-%    \begin{flushright}
-%     Abraham Joshua-Heschel
-%    \end{flushright}
-%
-%    Computers are useless. They can only give you answers.
-%    \begin{flushright}
-%      Pablo Picasso
-%    \end{flushright}
-%
-% \end{frame}
-%
-%
-%
-% %% \begin{frame}{ICS Control System Fact}
-% %%   \begin{exampleblock}{until 2016.06}
-% %%     \begin{itemize}
-% %%     \item \includegraphics[width=0.06\textheight]{./pictures/epics_logo.eps}~ \textbf{EPICS}, and ESS EPICS Environment
-% %%     \item \includegraphics[width=0.05\textheight]{./pictures/centos-emboss.eps} ~ CentOS 64bit for OS (7.1  1503)
-% %%     \item \includegraphics[width=0.08\textheight]{./pictures/git_logo.eps}~ for sources version control
-% %%     \item Event System : MRF EVG/EVR boards (cPCI, PCIe, VME, MTCA, etc)
-% %%     \item Siemens S7 PLC
-% %%     \item Control System Studio for OPI
-% %%     \end{itemize}
-% %%   \end{exampleblock}
-% %%   \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{A Page for a picture}
-%%   \includegraphics[width=\columnwidth]{./pictures/xchicane.eps}
-%% \end{frame}
-
-
-% \begin{frame}[plain]
-%   \begin{center}
-%     {\LARGE ¡Gracias!}\\\vspace{6mm}
-%     {\LARGE Tack!}  \\\vspace{6mm}
-%     {\LARGE 감사합니다!}\\\vspace{6mm}
-%     {\LARGE Thank you!}  \\\vspace{6mm}
-%     {\LARGE Dankesch\"on!} \\\vspace{6mm}
-%     {\LARGE Grazie!}  \\\vspace{6mm}
-% %            {\LARGE Merci!}\\\vspace{6mm}
-%     {\LARGE \smiley }
-%   \end{center}
-% \end{frame}
-
 
 \end{document}
